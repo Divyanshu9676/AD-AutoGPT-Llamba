@@ -1,0 +1,152 @@
+Future Alzheimer's Treatments Look Beyond Amyloid For Ways To Protect The Brain : Shots - Health News : NPR
+Accessibility links
+Skip to main content
+Keyboard shortcuts for audio player
+Open Navigation Menu
+Newsletters
+NPR Shop
+Close Navigation Menu
+Home
+News
+Expand/collapse submenu for News
+National
+World
+Politics
+Business
+Health
+Science
+Climate
+Race
+Culture
+Expand/collapse submenu for Culture
+Books
+Movies
+Television
+Pop Culture
+Food
+Art & Design
+Performing Arts
+Life Kit
+Gaming
+Music
+Expand/collapse submenu for Music
+Music Features
+Tiny Desk
+Live Sessions
+Hip-Hop 50
+All Songs Considered
+Podcasts & Shows
+Expand/collapse submenu for Podcasts & Shows
+Daily
+Morning Edition
+Weekend Edition Saturday
+Weekend Edition Sunday
+All Things Considered
+Fresh Air
+Up First
+Featured
+The NPR Politics Podcast
+Throughline
+Trump's Trials
+Wild Card with Rachel Martin
+More Podcasts & Shows
+Search
+Newsletters
+NPR Shop
+Music Features
+Tiny Desk
+Live Sessions
+Hip-Hop 50
+All Songs Considered
+About NPR
+Diversity
+Support
+Careers
+Press
+Ethics
+Future Alzheimer's Treatments Look Beyond Amyloid For Ways To Protect The Brain : Shots - Health News Alzheimer's researchers are trying new treatment approaches, including trying to boost the immune system, remove toxic tangles of protein and stimulate brain waves with light and sound.
+Shots
+Health News From NPR
+Your Health Treatments & Tests Health Inc. Policy-ish Public Health
+Twitter
+Treatments
+Future Alzheimer's Treatments Aim To Do More Than Clear Plaques From The Brain
+Updated August 10, 20219:40 AM ET
+Originally published August 9, 20214:13 PM ET
+Heard on
+All Things Considered
+Jon Hamilton
+Future Alzheimer's Treatments Aim To Do More Than Clear Plaques From The Brain
+Listen
+·
+4:21
+4:21
+Toggle more options
+Download
+Embed
+Embed
+<iframe src="https://www.npr.org/player/embed/1026207499/1026207500" width="100%" height="290" frameborder="0" scrolling="no" title="NPR embedded audio player">
+Transcript
+Enlarge this image
+Scientists are working to develop new treatments for Alzheimer's disease by looking beyond amyloid plaques, which have been the focus of most Alzheimer's drug development in the past 20 years.
+Science Photo Library — ZEPHYR./Getty Images
+hide caption
+toggle caption
+Science Photo Library — ZEPHYR./Getty Images
+Scientists are working to develop new treatments for Alzheimer's disease by looking beyond amyloid plaques, which have been the focus of most Alzheimer's drug development in the past 20 years.
+Science Photo Library — ZEPHYR./Getty Images
+Immune cells, toxic protein tangles and brain waves are among the targets of future Alzheimer's treatments, scientists say. These approaches are noteworthy because they do not directly attack the sticky amyloid plaques in the brain that are a hallmark of Alzheimer's. The plaques have been the focus of most Alzheimer's drug development in the past 20 years. And the drug Aduhelm was given conditional approval by the Food and Drug Administration in June based primarily on the medication's ability to remove amyloid from the brain. But many researchers believe amyloid drugs alone can't stop Alzheimer's. "The field has been moving beyond amyloid for many years now," says Malú Gámez Tansey, co-director of the Center for Translational Research in Neurodegenerative Disease at the University of Florida.
+Sponsor Message
+Tansey and a number of other researchers offered a wide range of alternative strategies at the Alzheimer's Association International Conference in Denver last month. Here are three of the most promising:
+Untangling toxic tau Another target for future treatments could be a protein called tau, which is responsible for the toxic tangles that appear inside brain cells as Alzheimer's develops. Tau may pose a greater threat than amyloid because "tau aggregation is directly correlated to cognitive decline," says Sarah DeVos, a senior scientist at Denali Therapeutics who has spent much of her career studying tau.
+Tau tangles appear first in a brain area called the entorhinal cortex, which is involved in memory and navigation, DeVos says. "And then it moves very systematically, so it jumps from one brain region to the next." Experimental drugs might be able to halt this process by removing toxic forms of tau, but it has been difficult to get these drugs past the blood-brain barrier. So researchers at Denali began studying a system that helps iron cross from the bloodstream into the brain. The system involves proteins called transferrin that carry iron throughout the body. The linings of tiny blood vessels in the brain are equipped with special transferrin receptors that allow iron to reach brain tissue.
+Sponsor Message
+The team at Denali realized, "Hey, this is a really efficient system," DeVos says. Then they asked, "Can we design a drug that will kind of more or less take a ride over?" They did, by designing a "transport vehicle" that could carry many different drugs across the blood-brain barrier by interacting with the transferrin receptors. At the Alzheimer's conference, DeVos described using the system to deliver a monoclonal antibody designed to clear out tau. The approach hasn't been tried in people yet. But it does work in a model system using living human brain cells. Targeting brain waves with light and sound therapy
+This idea comes from a team of scientists at MIT that has been studying electrical pulses in the brain called gamma waves. These waves play a critical role in learning and memory.
+The researchers noticed that these waves become weaker and less synchronized in people with Alzheimer's. So they thought they might be able to slow down the disease by boosting gamma waves. To find out, the team exposed mice to lights and sounds that caused the gamma waves in their brains to strengthen and synchronize, says Li-Huei Tsai, a professor of neuroscience at MIT and director of the Picower Institute for Learning and Memory. "What really surprised us is that this approach produces profound benefits in mice engineered to model Alzheimer's disease," Tsai says. After treatment, their brains started clearing out both amyloid and tau proteins, the brain's immune cells began to function better, and the mice improved on tests of learning and memory.
+The next step was to try the approach on humans, says Dr. Diane Chan, a neurologist at Massachusetts General Hospital who also works in Tsai's lab. So the team built a portable device that could generate light and sound pulses at just the right frequency: 40 hz.
+Sponsor Message
+"We sent the device home with people who had mild Alzheimer's dementia to let them use these devices an hour a day every day," Chan says. After three months, the team checked participants' brains for signs of atrophy, which is usually found in people with Alzheimer's. "We found that the group that used the active setting at 40hz light and sound actually did not see any atrophy over this time period," Chan says.
+In contrast, people who'd been using an inactive, placebo device did have brain atrophy. The results came from a study of 15 people that was designed to make sure the device was safe. Next, the scientists hope to confirm the results in a larger study. "This is completely noninvasive and could really change the way Alzheimer's disease is treated," Tsai says. Rejuvenating immune cells
+Immune cells
+are the brain's first line of defense against germs, and they also vacuum up not only amyloid, but also a range of other toxic substances. As people age, these immune cells get weaker and less able to prevent the changes that lead to Alzheimer's, Tansey says. "Perhaps the accumulation of amyloid [in Alzheimer's patients] is because the immune cells, the vacuum cleaners, don't do their job," Tansey says. Tansey's lab thinks that focusing on these immune cells could be key. "The idea is that if you could boost the immune system, rejuvenate it somehow, that you might be able to slow down the process, perhaps reverse it, but certainly prevent it," says Tansey.
+Tansey's lab is now searching for ways to provide that boost.
+Alzheimer's
+Facebook
+Flipboard
+Email
+Shots
+Health News From NPR
+Read & Listen
+Home
+News
+Culture
+Music
+Podcasts & Shows
+Connect
+Newsletters
+Facebook
+Instagram
+Press
+Public Editor
+Corrections
+Contact & Help
+About NPR
+Overview
+Diversity
+NPR Network
+Accessibility
+Ethics
+Finances
+Get Involved
+Support Public Radio
+Sponsor NPR
+NPR Careers
+NPR Shop
+NPR Events
+NPR Extra
+Terms of Use
+Privacy
+Your Privacy Choices
+Text Only
+Sponsor MessageBecome an NPR sponsor

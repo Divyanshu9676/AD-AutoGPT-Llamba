@@ -1,0 +1,1 @@
+WebMD is blocking access to users who trigger their security system, possibly by using certain words or phrases. Users can contact the site owner with the Cloudflare Ray ID provided to resolve the issue.

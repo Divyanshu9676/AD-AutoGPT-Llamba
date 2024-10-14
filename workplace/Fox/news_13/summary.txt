@@ -1,0 +1,1 @@
+Users who trigger the security system on www.webmd.com are blocked from accessing the site and can contact the site owner with the Cloudflare Ray ID provided to resolve the issue.
