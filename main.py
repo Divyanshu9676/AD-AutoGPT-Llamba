@@ -2,7 +2,8 @@ import re
 from typing import List, Union
 import textwrap
 import time
-import os 
+import os
+from dotenv import load_dotenv
 from duckduckgo_search import DDGS
 from AD_AUTO_GPT_functions import scrape_text, scrape_links, scrape_place_text, get_summary_period,text_all_lda,get_city_info
 from requests.packages import urllib3
@@ -21,7 +22,7 @@ import shutil
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=4000,chunk_overlap=0)
 
 CONTEXT_QA_TMPL = """
-Answer user's questions according to the information provided below
+Answering user's questions according to the information provided below
 Information：{context}
 
 Question：{query}
@@ -33,7 +34,11 @@ CONTEXT_QA_PROMPT = PromptTemplate(
 import certifi
 
 os.environ['SSL_CERT_FILE'] = certifi.where()
+# Load the .env file
+load_dotenv()
 
+# Set API key from environment variable
+api_key = os.getenv("OPENAI_API_KEY")
 
 def output_response(response: str) -> None:
     if not response:
@@ -174,7 +179,7 @@ AGENT_TMPL = """Answer the following questions in the given format, You can use 
 
 {tools}
 
-When answering, please follow the format enclosed in ---
+Format of the answer ---
 
 ---
 Question: The question need to be answered
@@ -187,7 +192,7 @@ Thought: Now, I've got the final answer
 Final Answer: The final answer of the initial question
 ---
 
-Now start to answer user's questions, remember to follow the specified format step by step before providing the final answer.
+Now starting to answer user's questions.
 
 Question: {input}
 
@@ -277,7 +282,7 @@ class CustomOutputParser(AgentOutputParser):
         action_input = match.group(2).strip()
 
         # Handling specific actions like "Introduce AD-GPT"
-        if action.lower() == "introduce ad-gpt":
+        if action.lower() == "Introduce ad-gpt":
             return AgentAction(
                 tool=action, tool_input="AD-GPT", log=llm_output
             )
@@ -291,7 +296,11 @@ class CustomOutputParser(AgentOutputParser):
 if __name__ == "__main__":
     ## set api token in terminal
     
-    os.environ["OPENAI_API_KEY"] = "Add your key"    
+    if api_key:
+        os.environ["OPENAI_API_KEY"] = api_key
+        print("API key has been set.")
+    else:
+        print("API key not found! Please check your .env file.")
     llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
     urllib3.disable_warnings()
     ad_gpt = ADGPT(llm)
@@ -347,7 +356,7 @@ if __name__ == "__main__":
      
     while True:
         try:
-            user_input =input("please enter the input  :")
+            user_input =input("please enter your question/input  :")
     
             response = agent_executor.run(user_input)
             
