@@ -11,7 +11,6 @@ This project, **AD-AutoGPT**, leverages OpenAI's GPT model and LangChain to prov
 - [File Structure](#file-structure)
 - [API Integration](#api-integration)
 - [Requirements](#requirements)
-- [Contributing](#contributing)
  
 
 ## Project Overview
@@ -24,7 +23,7 @@ Follow these steps to set up the environment and run the project:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/AD-AutoGPT.git
+    git clone https://github.com/DIVYANSHU9676/AD-AutoGPT.git
     cd AD-AutoGPT
     ```
 
@@ -37,7 +36,7 @@ Follow these steps to set up the environment and run the project:
 
 3. Add your OpenAI API key in the environment:
     ```bash
-    echo "OPENAI_API_KEY=your-api-key" > .env
+    echo "OPENAI_API_KEY=YOUR-API-KEY" > .env
     ```
 
 4. Run the main script:
@@ -47,7 +46,7 @@ Follow these steps to set up the environment and run the project:
 
 ## Usage
 
-To use AD-AutoGPT, first ensure that you have installed all the dependencies and set up your environment with the correct API keys.
+To use AD-AutoGPT, first, please make sure that you have installed all the dependencies and set up your environment with the right API keys.
 
 You can use it to:
 - Process and summarize medical papers.
@@ -72,8 +71,7 @@ AD-AutoGPT-main/
 ├── main.py                     # Main script to run the project
 ├── README.md                   # This README file
 ├── requirements.txt            # List of dependencies
-├── world_map.shp               # Shapefile for geographic data visualization
-└── new_env/                    # Virtual environment folder
+└── world_map.shp               # Shapefile for geographic data visualization
 ```
 
 ## API Integration
@@ -89,29 +87,9 @@ export OPENAI_API_KEY=your-api-key    # On Windows: set OPENAI_API_KEY=your-api-
 
 ## Requirements
 
-The project requires the following libraries, which are included in `requirements.txt`:
-
-```text
-openai==1.51.1
-langchain==0.3.3
-gensim==4.3.3
-geopandas==1.0.1
-matplotlib==3.9.2
-pandas==2.2.3
-requests==2.32.3
-spacy==3.8.2
-scikit-learn==1.5.2
-tqdm==4.66.5
-```
+The project requires the libraries, included in `requirements.txt`.
 
 You can install all the dependencies by running:
 ```bash
 pip install -r requirements.txt
 ```
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request with your improvements.
-
- 
-Let me know if you need any further adjustments!
