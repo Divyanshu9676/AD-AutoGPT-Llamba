@@ -4,7 +4,7 @@ import textwrap
 import time
 import os
 import logging
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 from duckduckgo_search import DDGS
 from AD_AUTO_GPT_functions import scrape_text, scrape_links, scrape_place_text, get_summary_period, text_all_lda, \
     get_city_info
@@ -22,7 +22,7 @@ import shutil
 logging.basicConfig(level=logging.ERROR)
 
 # Load environment variables
-load_dotenv()
+# load_dotenv()
 
 # Model and Tokenizer Initialization with Hugging Face Transformers
 model_name = "meta-llama/Llama-2-7b-chat-hf"  # Using a smaller LLaMA2 model for testing
