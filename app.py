@@ -899,7 +899,6 @@ if __name__ == "__main__":
     agent = create_structured_chat_agent(
         llm=model,  # Pass the language model
         tools=tools,  # List of tools the agent can use
-        verbose=True  # Optional: Verbosity for debugging/logging
     )
 
     # Agent executor
