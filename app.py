@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import urllib3
-from app import agent_executor  # Import the agent_executor from app.py
+from main import agent_executor  # Import the agent_executor from app.py
 
 # Initialize Flask app
 app = Flask(__name__)
