@@ -7,7 +7,10 @@ import time
 from datetime import date, timedelta
 from typing import Union, List, Tuple
 from urllib.parse import urljoin
-
+import os
+import logging
+import torch
+from transformers import LlamaForCausalLM, LlamaTokenizer
 import gensim
 import geopandas as gpd
 import matplotlib.pyplot as plt
@@ -28,7 +31,7 @@ from geotext import GeoText
 from langchain.agents import Tool, AgentExecutor, create_structured_chat_agent
 from langchain.chains.summarize import load_summarize_chain
 from langchain.docstore.document import Document
-from langchain.llms import HuggingFacePipeline
+from langchain_community.llms import HuggingFacePipeline
 from langchain.llms.base import BaseLLM
 from langchain.prompts import StringPromptTemplate
 from langchain.schema import AgentAction, AgentFinish
@@ -569,6 +572,11 @@ model_name = "meta-llama/Llama-2-7b-chat-hf"
 
 def load_llama_model(model_name: str):
     try:
+        # Check if we're in a test environment where model loading should be skipped
+        if os.getenv('SKIP_MODEL_LOADING', 'false') == 'true':
+            logging.info("Skipping model loading due to environment setting.")
+            return None, None
+
         # Load the tokenizer
         tokenizer = LlamaTokenizer.from_pretrained(model_name)
 
