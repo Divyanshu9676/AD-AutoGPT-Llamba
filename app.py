@@ -889,19 +889,20 @@ if __name__ == "__main__":
         ),
     ]
 
-    # Custom prompt and agent setup
-    agent_prompt = CustomPromptTemplate(template=AGENT_TMPL, tools=tools,
-                                        input_variables=["input", "intermediate_steps"])
-    output_parser = CustomOutputParser()
-    llm_chain = RunnableSequence(agent_prompt | model)
+    agent_prompt = CustomPromptTemplate(
+        template=AGENT_TMPL,  # Your prompt template structure
+        input_variables=["input", "intermediate_steps"],
+        tools=tools
+    )
 
-    # Initialize agent
+    # Initialize the agent with the prompt and tools
     agent = create_structured_chat_agent(
         llm=model,  # Pass the language model
         tools=tools,  # List of tools the agent can use
+        prompt=agent_prompt  # The custom prompt you defined
     )
 
-    # Agent executor
+    # Initialize the AgentExecutor
     agent_executor = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True)
 
     # Main loop
