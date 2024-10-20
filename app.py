@@ -7,6 +7,7 @@ import time
 from datetime import date, timedelta
 from typing import Union, List, Tuple
 from urllib.parse import urljoin
+
 import gensim
 import geopandas as gpd
 import matplotlib.pyplot as plt
@@ -24,21 +25,19 @@ from gensim.utils import simple_preprocess
 from geopy.exc import GeocoderTimedOut
 from geopy.geocoders import Nominatim
 from geotext import GeoText
-from langchain.agents import Tool, LLMSingleActionAgent, AgentExecutor, create_structured_chat_agent
-from langchain.chains.llm import LLMChain
+from langchain.agents import Tool, AgentExecutor, create_structured_chat_agent
 from langchain.chains.summarize import load_summarize_chain
 from langchain.docstore.document import Document
+from langchain.llms import HuggingFacePipeline
 from langchain.llms.base import BaseLLM
 from langchain.prompts import StringPromptTemplate
 from langchain.schema import AgentAction, AgentFinish
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.schema.runnable import RunnableSequence
 from nltk.corpus import wordnet as wn
 from nltk.stem.wordnet import WordNetLemmatizer
 from shapely.geometry import Point
 from spacy.lang.en import English
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.prompts.chat import HumanMessagePromptTemplate
+from transformers import pipeline
 
 # NLTK and SpaCy setup
 spacy_model = spacy.load('en_core_web_sm')
@@ -865,63 +864,85 @@ CONTEXT_QA_PROMPT = CustomPromptTemplate(
     template=CONTEXT_QA_TMPL,
 )
 
-# Main script logic
-if __name__ == "__main__":
-    urllib3.disable_warnings()
+# Load model
+tokenizer, model = load_llama_model(model_name)
 
-    ad_gpt = ADGPT(llm=model)
+# Define the device (GPU or CPU)
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    # Define tools with the scraping and plotting logic
-    tools = [
-        Tool(
-            name="Search and save the latest Alzheimer's disease news",
-            func=ad_gpt.google_search,
-            description="Search the latest news about Alzheimer's disease and save the URLs in a file."
-        ),
-        Tool(
-            name="Summarize the news",
-            func=ad_gpt.summary_news,
-            description="Summarize the news and save it."
-        ),
-        Tool(
-            name="Introduce AD-GPT",
-            func=ad_gpt.introduce_info,
-            description="Introduce the AD-GPT system."
-        ),
-        Tool(
-            name="Draw plots",
-            func=ad_gpt.draw_news,
-            description="This is a tool to draw plots about news saved in this device."
-        ),
-    ]
-
-    agent_prompt = CustomPromptTemplate(
-        template=AGENT_TMPL,  # Your prompt template structure
-        input_variables=["input", "intermediate_steps", "tools", "tool_names", "agent_scratchpad"],
-        tools=tools
+# Check if model and tokenizer were loaded successfully
+if model and tokenizer:
+    # Create a pipeline using Hugging Face's pipeline API
+    generation_pipeline = pipeline(
+        task="text-generation",
+        model=model,
+        tokenizer=tokenizer,
+        device=0 if device == "cuda" else -1  # Use GPU if available
     )
 
-    # Initialize the agent with the prompt and tools
-    agent = create_structured_chat_agent(
-        llm=model,  # Pass the language model
-        tools=tools,  # List of tools the agent can use
-        prompt=agent_prompt    # The custom prompt you defined
-    )
+    # Wrap the pipeline using LangChain's HuggingFacePipeline class
+    llm = HuggingFacePipeline(pipeline=generation_pipeline)
 
-    # Initialize the AgentExecutor
-    agent_executor = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True)
+    # Main script logic
+    if __name__ == "__main__":
+        urllib3.disable_warnings()
 
-    # Main loop
-    while True:
-        try:
-            user_input = input("Please enter your question/input: ")
-            if user_input.lower() == "exit":
-                print("Exiting the program.")
+        ad_gpt = ADGPT(llm=llm)  # Use the wrapped LLM
+
+        # Define tools with the scraping and plotting logic
+        tools = [
+            Tool(
+                name="Search and save the latest Alzheimer's disease news",
+                func=ad_gpt.google_search,
+                description="Search the latest news about Alzheimer's disease and save the URLs in a file."
+            ),
+            Tool(
+                name="Summarize the news",
+                func=ad_gpt.summary_news,
+                description="Summarize the news and save it."
+            ),
+            Tool(
+                name="Introduce AD-GPT",
+                func=ad_gpt.introduce_info,
+                description="Introduce the AD-GPT system."
+            ),
+            Tool(
+                name="Draw plots",
+                func=ad_gpt.draw_news,
+                description="This is a tool to draw plots about news saved in this device."
+            ),
+        ]
+
+        agent_prompt = CustomPromptTemplate(
+            template=AGENT_TMPL,  # Your prompt template structure
+            input_variables=["input", "intermediate_steps", "tools", "tool_names", "agent_scratchpad"],
+            tools=tools
+        )
+
+        # Initialize the agent with the ChatPromptTemplate and tools
+        agent = create_structured_chat_agent(
+            llm=llm,  # Use the wrapped Llama model
+            tools=tools,  # List of tools the agent can use
+            prompt=agent_prompt  # Use ChatPromptTemplate
+        )
+
+        # Initialize the AgentExecutor
+        agent_executor = AgentExecutor.from_agent_and_tools(agent=agent, verbose=True)
+
+        # Main loop to get user input and provide responses
+        while True:
+            try:
+                user_input = input("Please enter your question/input: ")
+                if user_input.lower() == "exit":
+                    print("Exiting the program.")
+                    break
+
+                # Execute the agent's response
+                response = agent_executor.run(user_input)
+                print(response)
+
+            except KeyboardInterrupt:
+                print("Program interrupted by user.")
                 break
-
-            response = agent_executor.run(user_input)
-            output_response(response)
-
-        except KeyboardInterrupt:
-            print("Program interrupted by user.")
-            break
+else:
+    logging.error("Model or tokenizer loading failed.")
