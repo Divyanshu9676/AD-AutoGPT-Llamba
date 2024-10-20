@@ -10,7 +10,6 @@ The project incorporates an autonomous information retrieval system using an LLa
 - [Installation](#installation)
 - [Usage](#usage)
 - [Features](#features)
-- [File Structure](#file-structure)
 - [Requirements](#requirements)
  
 
@@ -57,20 +56,8 @@ You can use it to:
 - **OpenAI GPT Integration:** Easily integrate OpenAI models for research purposes.
 - **Web Scraping for Alzheimer’s Research:** Automatically gather the latest research articles and updates.
 - **Interactive Dashboards:** Visualize real-time data trends through a customizable dashboard for easy access and analysis.
+- **Content Classification:** Automatically categorizes AD articles by topics like treatments or research, improving searchability and analysis.
 
-## File Structure
-
-```bash
-AD-AutoGPT-main/
-│
-├── AD_AUTO_GPT_functions.py    # Custom functions for GPT-related tasks
-├── corpus.pkl                  # Preprocessed text corpus for the analysis
-├── dictionary.gensim           # Gensim dictionary for NLP processing
-├── app.py                      # APP script to run the project
-├── README.md                   # This README file
-├── requirements.txt            # List of dependencies
-└── world_map.shp               # Shapefile for geographic data visualization
-```
 
 ## Requirements
 
