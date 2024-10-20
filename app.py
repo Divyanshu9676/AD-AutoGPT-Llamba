@@ -24,7 +24,7 @@ from gensim.utils import simple_preprocess
 from geopy.exc import GeocoderTimedOut
 from geopy.geocoders import Nominatim
 from geotext import GeoText
-from langchain.agents import Tool, LLMSingleActionAgent, AgentExecutor
+from langchain.agents import Tool, LLMSingleActionAgent, AgentExecutor, create_structured_chat_agent
 from langchain.chains.llm import LLMChain
 from langchain.chains.summarize import load_summarize_chain
 from langchain.docstore.document import Document
@@ -896,11 +896,10 @@ if __name__ == "__main__":
     llm_chain = RunnableSequence(agent_prompt | model)
 
     # Initialize agent
-    agent = LLMSingleActionAgent(
-        llm_chain=llm_chain,
-        output_parser=output_parser,
-        stop=["\nObservation:"],
-        allowed_tools=[tool.name for tool in tools],
+    agent = create_structured_chat_agent(
+        llm=model,  # Pass the language model
+        tools=tools,  # List of tools the agent can use
+        verbose=True  # Optional: Verbosity for debugging/logging
     )
 
     # Agent executor
