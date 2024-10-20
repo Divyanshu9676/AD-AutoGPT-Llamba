@@ -32,6 +32,7 @@ from langchain.llms.base import BaseLLM
 from langchain.prompts import StringPromptTemplate
 from langchain.schema import AgentAction, AgentFinish
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.schema.runnable import RunnableSequence
 from nltk.corpus import wordnet as wn
 from nltk.stem.wordnet import WordNetLemmatizer
 from shapely.geometry import Point
@@ -892,7 +893,7 @@ if __name__ == "__main__":
     agent_prompt = CustomPromptTemplate(template=AGENT_TMPL, tools=tools,
                                         input_variables=["input", "intermediate_steps"])
     output_parser = CustomOutputParser()
-    llm_chain = LLMChain(llm=model, prompt=agent_prompt)
+    llm_chain = RunnableSequence(agent_prompt | model)
 
     # Initialize agent
     agent = LLMSingleActionAgent(
