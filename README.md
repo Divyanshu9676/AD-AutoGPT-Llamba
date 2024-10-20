@@ -1,7 +1,9 @@
 
-# AD-AutoGPT: An AI Assistant for Alzheimer's Disease Research
+# AD-AutoGPT (using Llamba): An AI Assistant for Alzheimer's Disease Research
 
 This project, **AD-AutoGPT**, leverages OpenAI's GPT model and LangChain to provide assistance in Alzheimer's disease research. By integrating various tools, such as natural language processing, machine learning, and geographical data visualization, the tool aims to aid researchers and healthcare professionals in understanding and analyzing data relevant to Alzheimer's disease.
+
+The project incorporates an autonomous information retrieval system using an LLaMA-based language model. This system is structured similarly to autonomous AI agents like AutoGPT and includes functionalities for searching, summarizing information, storing results, and presenting them to users, enhancing efficiency and accessibility in Alzheimer's research.
 
 ## Table of Contents
 - [Project Overview](#project-overview)
@@ -9,7 +11,6 @@ This project, **AD-AutoGPT**, leverages OpenAI's GPT model and LangChain to prov
 - [Usage](#usage)
 - [Features](#features)
 - [File Structure](#file-structure)
-- [API Integration](#api-integration)
 - [Requirements](#requirements)
  
 
@@ -23,8 +24,8 @@ Follow these steps to set up the environment and run the project:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/DIVYANSHU9676/AD-AutoGPT.git
-    cd AD-AutoGPT
+    git clone https://github.com/Divyanshu9676/AD-AutoGPT-Llamba.git
+    cd AD-AutoGPT-Llamba
     ```
 
 2. Set up the virtual environment and install dependencies:
@@ -34,14 +35,9 @@ Follow these steps to set up the environment and run the project:
     pip install -r requirements.txt
     ```
 
-3. Add your OpenAI API key in the environment:
+3. Run the main script:
     ```bash
-    echo "OPENAI_API_KEY=YOUR-API-KEY" > .env
-    ```
-
-4. Run the main script:
-    ```bash
-    python main.py
+    python app.py
     ```
 
 ## Usage
@@ -59,6 +55,8 @@ You can use it to:
 - **Data Visualization:** Leverage geographic data to visualize the distribution of Alzheimer's cases.
 - **AI-Powered Analysis:** Use GPT models to analyze and predict trends in Alzheimer's research.
 - **OpenAI GPT Integration:** Easily integrate OpenAI models for research purposes.
+- **Web Scraping for Alzheimer’s Research:** Automatically gather the latest research articles and updates.
+- **Interactive Dashboards:** Visualize real-time data trends through a customizable dashboard for easy access and analysis.
 
 ## File Structure
 
@@ -68,21 +66,10 @@ AD-AutoGPT-main/
 ├── AD_AUTO_GPT_functions.py    # Custom functions for GPT-related tasks
 ├── corpus.pkl                  # Preprocessed text corpus for the analysis
 ├── dictionary.gensim           # Gensim dictionary for NLP processing
-├── main.py                     # Main script to run the project
+├── app.py                      # APP script to run the project
 ├── README.md                   # This README file
 ├── requirements.txt            # List of dependencies
 └── world_map.shp               # Shapefile for geographic data visualization
-```
-
-## API Integration
-
-This project uses the **OpenAI API** to access GPT models. Make sure to:
-1. Sign up for an API key at [OpenAI](https://beta.openai.com/signup/).
-2. Add the key to your environment by placing it in a `.env` file or setting it in the terminal.
-
-To add the key:
-```bash
-export OPENAI_API_KEY=your-api-key    # On Windows: set OPENAI_API_KEY=your-api-key
 ```
 
 ## Requirements
