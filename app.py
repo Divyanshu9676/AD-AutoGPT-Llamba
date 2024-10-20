@@ -37,6 +37,8 @@ from nltk.corpus import wordnet as wn
 from nltk.stem.wordnet import WordNetLemmatizer
 from shapely.geometry import Point
 from spacy.lang.en import English
+from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.prompts.chat import HumanMessagePromptTemplate
 
 # NLTK and SpaCy setup
 spacy_model = spacy.load('en_core_web_sm')
@@ -764,12 +766,16 @@ Now starting to answer the user's question:
 
 Question: {input}
 
-{agent_scratchpad}
+Action: {agent_scratchpad}
 """
 
 
 # Custom Prompt Template and Output Parser (as provided earlier)
 class CustomPromptTemplate(StringPromptTemplate):
+    @property
+    def _prompt_type(self) -> str:
+        pass
+
     def format(self, **kwargs) -> str:
         # Extract the necessary input variables from the arguments
         query = kwargs.get("input", "")
@@ -891,7 +897,7 @@ if __name__ == "__main__":
 
     agent_prompt = CustomPromptTemplate(
         template=AGENT_TMPL,  # Your prompt template structure
-        input_variables=["input", "intermediate_steps"],
+        input_variables=["input", "intermediate_steps", "tools", "tool_names", "agent_scratchpad"],
         tools=tools
     )
 
@@ -899,7 +905,7 @@ if __name__ == "__main__":
     agent = create_structured_chat_agent(
         llm=model,  # Pass the language model
         tools=tools,  # List of tools the agent can use
-        prompt=agent_prompt  # The custom prompt you defined
+        prompt=agent_prompt    # The custom prompt you defined
     )
 
     # Initialize the AgentExecutor
