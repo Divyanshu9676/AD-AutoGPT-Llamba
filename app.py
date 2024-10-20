@@ -736,10 +736,9 @@ class ADGPT:
 
     def introduce_info(self, query: str) -> str:
         context = """
-        With the powerful reasoning ability of LLM, we have built an automated task system similar to AutoGPT, \
-            called AD-GPT, to collect and organize information related to AD on a daily basis. \
-                AD-GPT has search, summary, storage, and drawing capabilities. With our own tools, \
-                    it can automatically run relevant tasks and organize them without human intervention.
+        AD-GPT is an automated task system designed to collect, summarize, and organize information related to Alzheimer's Disease. similar to AutoGPT, \
+            called AD-GPT. It has search, summarization, storage, and visualization capabilities.  With our own tools, \
+                    it can automatically run relevant tasks and organize them autonomously without human intervention.
         """
         prompt = CONTEXT_QA_PROMPT.format(query=query, context=context)
         return generate_llama_response(prompt)
