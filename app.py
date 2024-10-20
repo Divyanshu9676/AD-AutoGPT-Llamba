@@ -1,41 +1,41 @@
-import os
-import textwrap
-import requests
-from bs4 import BeautifulSoup
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
 import datetime
-import time
-from langchain.chains.llm import LLMChain
-from urllib.parse import urljoin
-import geopandas as gpd
-from geotext import GeoText
+import logging
+import os
 import re
-from geopy.geocoders import Nominatim
-from geopy.exc import GeocoderTimedOut
+import textwrap
+import time
 from datetime import date, timedelta
-import spacy
-import nltk
+from typing import Union, List, Tuple
+from urllib.parse import urljoin
 import gensim
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import nltk
+import numpy as np
+import pandas as pd
+import pyLDAvis.gensim
+import requests
+import spacy
+import urllib3
+from bs4 import BeautifulSoup
+from duckduckgo_search import DDGS
+from gensim import corpora
+from gensim.utils import simple_preprocess
+from geopy.exc import GeocoderTimedOut
+from geopy.geocoders import Nominatim
+from geotext import GeoText
+from langchain.agents import Tool, LLMSingleActionAgent, AgentExecutor
+from langchain.chains.llm import LLMChain
+from langchain.chains.summarize import load_summarize_chain
+from langchain.docstore.document import Document
+from langchain.llms.base import BaseLLM
+from langchain.prompts import StringPromptTemplate
+from langchain.schema import AgentAction, AgentFinish
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from nltk.corpus import wordnet as wn
 from nltk.stem.wordnet import WordNetLemmatizer
-from gensim.utils import simple_preprocess
-from gensim import corpora
-import pyLDAvis.gensim
 from shapely.geometry import Point
-import descartes
-from typing import Union, List
 from spacy.lang.en import English
-import logging
-from langchain.prompts import StringPromptTemplate
-from langchain.llms.base import BaseLLM
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.docstore.document import Document
-from langchain.chains.summarize import load_summarize_chain
-from langchain.agents import Tool, LLMSingleActionAgent, AgentExecutor
-from langchain.schema import AgentAction, AgentFinish
-from duckduckgo_search import DDGS
 
 # NLTK and SpaCy setup
 spacy_model = spacy.load('en_core_web_sm')
@@ -472,7 +472,7 @@ def scrape_text(url: str, news_url='bbc') -> str:
     return text, datetime_value, news_title
 
 
-def format_hyperlinks(hyperlinks: list[tuple[str, str]]) -> list[str]:
+def format_hyperlinks(hyperlinks: List[Tuple[str, str]]) -> List[str]:
     """Format hyperlinks to be displayed to the user
 
     Args:
@@ -484,7 +484,7 @@ def format_hyperlinks(hyperlinks: list[tuple[str, str]]) -> list[str]:
     return [f"{link_text} ({link_url})" for link_text, link_url in hyperlinks]
 
 
-def extract_hyperlinks(soup: BeautifulSoup, base_url: str) -> list[tuple[str, str]]:
+def extract_hyperlinks(soup: BeautifulSoup, base_url: str) -> List[Tuple[str, str]]:
     """Extract hyperlinks from a BeautifulSoup object
 
     Args:
@@ -556,12 +556,15 @@ def scrape_place_text(text):
             print(str(city) + ' is not a city')
     return cities
 
+
 # Model and Tokenizer Initialization
 from transformers import LlamaForCausalLM, LlamaTokenizer
-from accelerate import init_empty_weights, infer_auto_device_map
 import logging
 import torch
+
 model_name = "meta-llama/Llama-2-7b-chat-hf"
+
+
 def load_llama_model(model_name: str):
     try:
         # Load the tokenizer
@@ -576,7 +579,7 @@ def load_llama_model(model_name: str):
             logging.info("CUDA not available. Loading model on CPU.")
 
         # Load the model with the appropriate device map
-        model = LlamaForCausalLM.from_pretrained(model_name, device_map=device)
+        model = LlamaForCausalLM.from_pretrained(model_name).to(device)
         logging.info("Model and tokenizer loaded successfully.")
 
         return tokenizer, model
@@ -584,8 +587,10 @@ def load_llama_model(model_name: str):
         logging.error(f"Error loading model or tokenizer: {e}")
         return None, None
 
+
 # Load model
 tokenizer, model = load_llama_model(model_name)
+
 
 # Helper function for generating response using LLaMA
 def generate_llama_response(prompt: str) -> str:
@@ -597,6 +602,7 @@ def generate_llama_response(prompt: str) -> str:
     except Exception as e:
         logging.error(f"Error during model generation: {e}")
         return ""
+
 
 # Function to output response with a typewriter effect
 def output_response(response: str) -> None:
@@ -611,6 +617,7 @@ def output_response(response: str) -> None:
             print(" ", end="", flush=True)  # Add a space between each word
         print()  # Move to the next line after each line is printed
     print("----------------------------------------------------------------")
+
 
 # ADGPT Class (Updated with scraping and plotting functionalities)
 class ADGPT:
@@ -727,6 +734,7 @@ class ADGPT:
         prompt = CONTEXT_QA_PROMPT.format(query=query, context=context)
         return generate_llama_response(prompt)
 
+
 # Prompt Templates
 CONTEXT_QA_TMPL = """
 Answering user's questions according to the information provided below:
@@ -734,10 +742,6 @@ Information: {context}
 
 Question: {query}
 """
-CONTEXT_QA_PROMPT = StringPromptTemplate(
-    input_variables=["query", "context"],
-    template=CONTEXT_QA_TMPL,
-)
 
 AGENT_TMPL = """Answer the following questions in the given format. You can use the following tools:
 
@@ -762,16 +766,97 @@ Question: {input}
 {agent_scratchpad}
 """
 
+
 # Custom Prompt Template and Output Parser (as provided earlier)
 class CustomPromptTemplate(StringPromptTemplate):
     def format(self, **kwargs) -> str:
-        # Custom logic
-        pass
+        # Extract the necessary input variables from the arguments
+        query = kwargs.get("input", "")
+        intermediate_steps = kwargs.get("intermediate_steps", [])
+        tools = kwargs.get("tools", [])
+        tool_names = ", ".join([tool.name for tool in tools])  # list of tool names
+
+        # Construct the agent's scratchpad (intermediate steps used to reason)
+        scratchpad = ""
+        if intermediate_steps:
+            for step in intermediate_steps:
+                scratchpad += f"Thought: {step['thought']}\n"
+                scratchpad += f"Action: {step['action']}\n"
+                scratchpad += f"Observation: {step['observation']}\n"
+
+        # Choose the correct template based on context
+        if "context" in kwargs:
+            # Use CONTEXT_QA_TMPL if context is provided
+            context = kwargs.get("context", "")
+            formatted_prompt = CONTEXT_QA_TMPL.format(query=query, context=context)
+        else:
+            # Use AGENT_TMPL if context is not provided (agent-based task)
+            formatted_prompt = AGENT_TMPL.format(
+                input=query,
+                agent_scratchpad=scratchpad,
+                tools=tools,
+                tool_names=tool_names
+            )
+
+        return formatted_prompt.strip()
+
 
 class CustomOutputParser:
     def parse(self, llm_output: str) -> Union[AgentAction, AgentFinish]:
-        # Custom logic
-        pass
+        """
+        Parse the LLM output and determine whether it is an action to be taken
+        or the final answer.
+
+        Args:
+            llm_output (str): The output from the language model to be parsed.
+
+        Returns:
+            Union[AgentAction, AgentFinish]: Returns either an AgentAction
+            (indicating a tool to use) or AgentFinish (indicating the final answer).
+        """
+        # Split the output into lines
+        lines = llm_output.strip().split('\n')
+
+        # Initialize variables to store parsed values
+        thought = None
+        action = None
+        action_input = None
+        final_answer = None
+
+        for line in lines:
+            # Check for the final answer
+            if "Final Answer:" in line:
+                final_answer = line.split("Final Answer:")[-1].strip()
+                return AgentFinish(return_values={"output": final_answer}, log=llm_output)
+
+            # Check for the thought process
+            if "Thought:" in line:
+                thought = line.split("Thought:")[-1].strip()
+
+            # Check for the action to be taken
+            if "Action:" in line:
+                action = line.split("Action:")[-1].strip()
+
+            # Check for the input required for the action
+            if "Action Input:" in line:
+                action_input = line.split("Action Input:")[-1].strip()
+
+        # If action and action input are parsed, return an AgentAction
+        if action and action_input:
+            return AgentAction(
+                tool=action,
+                tool_input=action_input,
+                log=llm_output
+            )
+
+        # If no action or final answer is found, return None or raise an error
+        raise ValueError("Could not parse LLM output correctly.")
+
+
+CONTEXT_QA_PROMPT = CustomPromptTemplate(
+    input_variables=["query", "context"],
+    template=CONTEXT_QA_TMPL,
+)
 
 # Main script logic
 if __name__ == "__main__":
@@ -804,7 +889,8 @@ if __name__ == "__main__":
     ]
 
     # Custom prompt and agent setup
-    agent_prompt = CustomPromptTemplate(template=AGENT_TMPL, tools=tools, input_variables=["input", "intermediate_steps"])
+    agent_prompt = CustomPromptTemplate(template=AGENT_TMPL, tools=tools,
+                                        input_variables=["input", "intermediate_steps"])
     output_parser = CustomOutputParser()
     llm_chain = LLMChain(llm=model, prompt=agent_prompt)
 
