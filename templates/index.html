@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI AutoGPT by Divyanshu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f5fb;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: #5a9ce3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .content-box {
+            max-width: 900px;
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+        h1 {
+            color: #333;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 130px;
+            padding: 16px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f8f8f9;
+            resize: none;
+        }
+        button {
+            padding: 12px 32px;
+            background-color: #5a9ce3;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #4c82cc;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #fafbfb;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        .loading {
+            display: none;
+            margin-top: 20px;
+            color: #aaa;
+            font-style: italic;
+            text-align: center;
+        }
+        .step {
+            border: 1px solid #ddd;
+            padding: 16px;
+            margin-top: 15px;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .step strong {
+            color: #5a9ce3;
+        }
+        .final {
+            border: 2px solid #28b072;
+            padding: 20px;
+            background-color: #e6ffe6;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        footer {
+            background-color: #5a9ce3;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    AutoGPT Powered by Llamba
+</header>
+
+<div class="container">
+    <div class="content-box">
+        <h1>Input Your Question</h1>
+        <textarea id="inputText" placeholder="Ask a question, like: What’s new with Alzheimer’s research? Or generate some visuals."></textarea>
+        <button id="submitBtn">Ask</button>
+
+        <div id="stepsContainer" class="output"></div>
+        <div id="loading" class="loading">Processing your request, please wait...</div> <!-- Simulating task process -->
+    </div>
+</div>
+
+<footer>
+    &copy; 2024 AutoGPT powered by Divyanshu - All rights reserved.
+</footer>
+
+<script>
+    document.getElementById('submitBtn').addEventListener('click', function () {
+        const inputText = document.getElementById('inputText').value;
+        if (inputText.trim() !== '') {
+            document.getElementById('loading').style.display = 'block'; // Show loading message
+            document.getElementById('stepsContainer').innerHTML = '';  // Clear previous steps
+
+            // Send data to the backend
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query: inputText }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none'; // Hide loading message
+
+                if (data.steps && data.steps.length > 0) {
+                    data.steps.forEach(step => addStep(step.title, step.content));
+                }
+
+                if (data.finalAnswer) {
+                    addFinalAnswer(data.finalAnswer);
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none'; // Hide loading message
+                console.error('Error:', error);
+            });
+        }
+    });
+
+    function addStep(title, content) {
+        const stepDiv = document.createElement('div');
+        stepDiv.classList.add('step');
+        stepDiv.innerHTML = `<strong>${title}:</strong> ${content}`;
+        document.getElementById('stepsContainer').appendChild(stepDiv);
+    }
+
+    function addFinalAnswer(content) {
+        const finalDiv = document.createElement('div');
+        finalDiv.classList.add('final');
+        finalDiv.innerHTML = `<strong>Final Response:</strong> ${content}`;
+        document.getElementById('stepsContainer').appendChild(finalDiv);
+    }
+</script>
+
+</body>
+</html>
